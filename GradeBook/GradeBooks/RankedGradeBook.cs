@@ -1,4 +1,7 @@
 ﻿using GradeBook.Enums;
+using System;
+using System.Linq;
+
 namespace GradeBook.GradeBooks
 {
     public class RankedGradeBook : BaseGradeBook
@@ -12,16 +15,29 @@ namespace GradeBook.GradeBooks
         {
             if (Students.Count < 5)
                 throw new System.InvalidOperationException("Ranked Grading requires a minimum of 5 students to work");
-           else if (averageGrade >= 80)
+            Students.ToString();
+            Students.OrderByDescending(e => e.AverageGrade);
+            if (  averageGrade >= ( Students.ElementAt( (int) Math.Ceiling(Students.Count*0.2)-1 ).AverageGrade )  )
                 return 'A';
-            else if (averageGrade >= 60)
+            else if (averageGrade >= (Students.ElementAt((int)Math.Ceiling(Students.Count * 0.4) -1).AverageGrade))
                 return 'B';
-            else if (averageGrade >= 40)
+            else if (averageGrade >= (Students.ElementAt((int)Math.Ceiling(Students.Count * 0.6) -1).AverageGrade))
                 return 'C';
-            else if (averageGrade >= 20)
+            else if (averageGrade >= (Students.ElementAt((int)Math.Ceiling(Students.Count * 0.8) -1).AverageGrade))
                 return 'D';
-            else
-                return 'F';
+
+
+            return 'F';
+        }
+
+        public override void CalculateStatistics()
+        {
+            if (Students.Count < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+                return;
+            }
+            base.CalculateStatistics();
         }
     }
 }
