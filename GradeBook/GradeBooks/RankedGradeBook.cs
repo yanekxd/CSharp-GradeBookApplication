@@ -14,8 +14,7 @@ namespace GradeBook.GradeBooks
         public override char GetLetterGrade(double averageGrade)
         {
             if (Students.Count < 5)
-                throw new System.InvalidOperationException("Ranked Grading requires a minimum of 5 students to work");
-            Students.ToString();
+                throw new InvalidOperationException("Ranked Grading requires a minimum of 5 students to work");
             Students.OrderByDescending(e => e.AverageGrade);
             if (  averageGrade >= ( Students.ElementAt( (int) Math.Ceiling(Students.Count*0.2)-1 ).AverageGrade )  )
                 return 'A';
@@ -38,6 +37,16 @@ namespace GradeBook.GradeBooks
                 return;
             }
             base.CalculateStatistics();
+        }
+
+        public override void CalculateStudentStatistics(string name)
+        {
+            if (Students.Count < 5)
+            {
+                Console.WriteLine("Ranked grading requires at least 5 students with grades in order to properly calculate a student's overall grade.");
+                return;
+            }
+            base.CalculateStudentStatistics(name);
         }
     }
 }
